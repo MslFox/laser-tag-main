@@ -1,0 +1,195 @@
+.nav-tabs{
+    border: none !important;
+}
+.nav-link {
+    font-weight: bold !important;
+    color: black !important;
+    border-radius: 20px !important; 
+}
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.5) ! important;
+} 
+
+.nav-tabs {
+    --bs-nav-tabs-link-active-bg: rgb(180, 28, 28) !important;
+}
+
+
+.bordered-item {
+    border-radius: 5px;
+    width: 120px;
+    background: lightgray;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+}
+
+#point__list {
+    display: flex;
+    margin: auto;
+    width: 330px;
+    align-items: center;
+    flex-direction: column;
+}
+
+#point__list li {
+    padding: 13px 10px;
+    border-bottom: lightgray solid 1px;
+    display: flex;
+    align-items: center;
+    width: 250px;
+}
+
+#point__list label {
+    min-width: 90px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+section.points input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+}
+
+section.common {
+    /* background: rgb(84, 97, 119); */
+    background: #909090;
+    padding: 10px 0 20px;
+    margin: 5px;
+}
+
+section.common input[type=text],
+section.common input[type=number] {
+    width: 50px;
+    border-radius: 8px;
+    background: lightgray;
+}
+
+section.individ {
+    /* background: rgb(117, 97, 119); */
+    background: #565656;
+    padding: 10px 0 20px;
+    margin: 5px;
+}
+
+.btn {
+    width: 250px;
+}
+
+.btn__section {
+    padding: 5px 10px;
+}
+
+.btn__increment {
+    border-radius: 8px;
+    background: grey;
+    width: 30px;
+    margin: 0 5px;
+}
+
+select {
+    width: 45px;
+    border-radius: 8px;
+    background: black;
+    font-weight: bold;
+    margin-right: 2px !important;
+}
+
+.individ__row {
+    text-align: center;
+}
+
+.individ__row span {
+    font-weight: bold;
+    bottom: 2px;
+    background: black;
+    width: 25px;
+    display: inline-block;
+    text-align: center;
+}
+
+.custom-dropdown-select {
+    position: relative;
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    top: 6px;
+    border-radius: 8px;
+    border: 1px solid black;
+    margin: 0 5px;
+}
+
+.custom-dropdown-options {
+    position: absolute;
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    right: 28px;
+}
+
+.custom-dropdown-options li {
+    border-radius: 8px;
+    border: 2px solid black;
+    width: 43px;
+    height: 25px;
+}
+
+.custom-dropdown-options li:hover {
+    border: 2px solid white;
+}
+
+.custom-dropdown-options.show {
+    display: block;
+}
+
+.common__statistic {
+    background: rgb(58 29 29 / 70%) !important;
+}
+
+.manager__statistic .border {
+    background: white;
+}
+
+.red {
+    color: red
+}
+
+.blue {
+    color: blue
+}
+
+.green {
+    color: green
+}
+
+.yellow {
+    color: yellow
+}
+
+.violet {
+    color: violet
+}
+button:disabled {
+    opacity: 0.5; /* Пример, делает кнопку полупрозрачной */
+    cursor: not-allowed; /* Меняет курсор на значок запрета */
+    background-color: #909090! important;
+}
+
+
+.tab-content{
+    z-index: 101;
+}
+
+#overlay{
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 73, 18, 0.4);
+    position: absolute;
+    display: none;
+}

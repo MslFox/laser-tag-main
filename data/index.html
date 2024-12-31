@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ESP Web Server</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- Bootstrap JS-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <title>ESP Web Server</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+  </head>
+  <body style="background: #9ba3aa;">
+    <div class="container d-flex flex-column justify-content-center mt-3 mx-auto">
+      <div id="overlay" ></div>
+      <!-- Навигационные закладки -->
+      <ul class="nav nav-tabs mb-3 mx-auto" id="tabs">
+        <li class="nav-item">
+          <a class="fw-bolder nav-link active" id="tab1" data-toggle="tab" href="#points">Точки</a>
+        </li>
+        <li class="nav-item">
+          <a class="fw-bolder nav-link" id="tab2" data-toggle="tab" href="#base_settings">База</a>
+        </li>
+        <li class="nav-item">
+          <a class="fw-bolder nav-link" id="tab3" data-toggle="tab" href="#base_statistic_tab">База Статистика/Старт</a>
+        </li>
+        <li class="fw-bolder nav-item">
+          <a class="nav-link" id="tab4" data-toggle="tab" href="#target_settings">Мишень</a>
+        </li>
+        <li class="fw-bolder nav-item">
+          <a class="nav-link" id="tab5" data-toggle="tab" href="#target_statistic_tab">Мишень Статистика/Старт</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <!-- Точки -->
+        <div class="tab-pane fade" id="points">
+          <section class="points">
+            <div class="pt-2 pb-2 text-center fs-5 fw-bold text-warning">Точки учавствующие в игре:</div>
+            <ul class="list-unstyled" id="point__list"></ul>
+            <div class="justify-content-center d-flex btn__section">
+              <button class="btn btn-success" onclick="refreshSocket()">Обновить подключения</button>
+            </div>
+          </section>
+        </div>
+        <!-- База-->
+        <div class="tab-pane fade" id="base_settings">
+          <section class="common rounded-3">
+            <div class="pt-2 pb-2 text-center fs-5 fw-bold text-warning">Общие настройки База</div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="time_before_start">Обр. отсчет,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('time_before_start',1,999,saveBaseConfig)">-</button>
+                <input id="time_before_start" type="number" min="10" max="999" value="10" readonly />
+                <button class="btn__increment" onclick="increment('time_before_start',1,999,saveBaseConfig)">+</button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="round_duration">Время раунда,мин</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('round_duration',1,999,saveBaseConfig)">-</button>
+                <input id="round_duration" type="number" min="1" max="999" value="1" readonly />
+                <button class="btn__increment" onclick="increment('round_duration',1,999,saveBaseConfig)">+</button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="player_id">Учитывать ID</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="toggleValue('player_id',saveBaseConfig)"><</button>
+                <input id="player_id" type="text" value="НЕТ" data-toggle="false11" readonly />
+                <button class="btn__increment" onclick="toggleValue('player_id',saveBaseConfig)">></button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="time_retantion">Удержание,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('time_retantion',0,600,saveBaseConfig)">-</button>
+                <input id="time_retantion" type="number" min="0" max="600" value="1" readonly />
+                <button class="btn__increment" onclick="increment('time_retantion',0,600,saveBaseConfig)">+</button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="time_confirm">Подтвержд,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('time_confirm',1, 60,saveBaseConfig)">-</button>
+                <input id="time_confirm" type="number" min="1" max="60" value="1" readonly />
+                <button class="btn__increment" onclick="increment('time_confirm',1, 60,saveBaseConfig)">+</button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="timeout_after_capture">Пауза,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('timeout_after_capture', 0, 600,saveBaseConfig)">-</button>
+                <input id="timeout_after_capture" type="number" min="0" max="600" value="10" readonly />
+                <button class="btn__increment" onclick="increment('timeout_after_capture', 0, 600,saveBaseConfig)">+</button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="max_qnty_capture">Кол-во захватов</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('max_qnty_capture', 1, 100,saveBaseConfig)">-</button>
+                <input id="max_qnty_capture" type="number" min="1" max="100" value="1" readonly />
+                <button class="btn__increment" onclick="increment('max_qnty_capture', 1, 100,saveBaseConfig)">+</button>
+              </div>
+            </div>
+          </section>
+          <section class="individ common__statistic rounded-3">
+            <div class="pt-2 pb-2 text-center fs-5 fw-bold text-warning">Индивидуальные настройки</div>
+            <div id="individ__content_base"></div>
+            <button type="button" class="btn btn-warning d-block mx-auto mt-3" id="btn_reverse_side" onclick="reverseColorSide()">
+              Смена цветов сторон и сохранение
+            </button>
+          </section>
+        </div>
+        <!-- База Статистика/Старт -->
+        <div class="tab-pane text-center fade" id="base_statistic_tab">
+          <section class="common__statistic d-inline-block px-5 mt-1 pb-2 rounded-3">
+            <div class="p-2 text-center fs-5 fw-bold text-warning" id="base_statistic">Общая статистика баз</div>
+          </section>
+          <section class="manager__statistic mt-1 p-2">
+            <div class="border fw-bold text-center red col-3 mx-auto mt-1" id="game_base_timer" style="display: none;">
+              <div id="game_base_state">ИДЕТ ИГРА</div>
+              <div id="game_base_timer_indicator_label"></div>
+              <div id="game_base_timer_indicator" class="green"></div>
+            </div>
+            <button type="button" class="btn btn-warning d-block mx-auto mt-1" id="btn_reset_scores_base_game">
+              Сбросить баллы
+            </button>
+            <button type="button" class="btn btn-danger d-block mx-auto mt-1" id="btn_stop_base_game">
+              Остановить игру
+            </button>
+            <button type="button" class="btn btn-success d-block mx-auto mt-1" id="btn_start_base_game">
+              Запустить игру
+            </button>
+          </section>
+        </div>
+        <!-- Мишень-->
+        <div class="tab-pane fade" id="target_settings">
+          <section class="common rounded-3">
+            <div class="pt-2 pb-2 text-center fs-5 fw-bold text-warning">Общие настройки Мишень</div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="time_flashlight_sec">Вспышка,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrementDouble('time_flashlight_sec',0.1,0.5,saveTargetConfig)">-</button>
+                <input id="time_flashlight_sec" type="number" min="0.1" max="0.5" value="0" readonly />
+                <button class="btn__increment" onclick="incrementDouble('time_flashlight_sec',0.1,0.5,saveTargetConfig)">+</button>
+              </div>
+            </div>
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="time_aim_sec">Мишень активна,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('time_aim_sec',0,10,saveTargetConfig)">-</button>
+                <input id="time_aim_sec" type="number" min="1" max="10" value="1" readonly />
+                <button class="btn__increment" onclick="increment('time_aim_sec',0,10,saveTargetConfig)">+</button>
+              </div>
+            </div>
+
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="time_pause_sec">Пауза,сек</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('time_pause_sec',0,10,saveTargetConfig)">-</button>
+                <input id="time_pause_sec" type="number" min="1" max="10" value="0" readonly />
+                <button class="btn__increment" onclick="increment('time_pause_sec',0,10,saveTargetConfig)">+</button>
+              </div>
+            </div>
+
+            <div class="row pb-1">
+              <label class="col-6 text-end" for="round_duration_target">Время раунда,мин</label>
+              <div class="col-6 d-flex">
+                <button class="btn__increment" onclick="decrement('round_duration_target',1,999,saveTargetConfig)">-</button>
+                <input id="round_duration_target" type="number" min="1" max="999" value="1" readonly />
+                <button class="btn__increment" onclick="increment('round_duration_target',1,999,saveTargetConfig)">+</button>
+              </div>
+            </div>
+          </section>
+          <section class="individ common__statistic rounded-3">
+            <div id="individ__content_target"></div>
+          </section>
+        </div>
+        <!-- Мишень Статистика/Старт -->
+        <div class="tab-pane text-center fade" id="target_statistic_tab">
+          <section class="common__statistic d-inline-block px-5 mt-1 pb-2 rounded-3">
+            <div class="p-2 text-center fs-5 fw-bold text-warning" id="target_statistic">Общая статистика мишеней</div>
+          </section>
+          <section class="manager__statistic mt-1 p-2">
+            <div class="border fw-bold text-center red col-3 mx-auto mt-1" id="game_target_timer" style="display: none;">
+              <div id="game_target_state">ИДЕТ ИГРА</div>
+              <div id="game_target_timer_indicator_label"></div>
+              <div id="game_target_timer_indicator" class="green"></div>
+            </div>
+            <button type="button" class="btn btn-warning d-block mx-auto mt-1" id="btn_reset_scores_target_game">
+              Сбросить баллы
+            </button>
+            <button type="button" class="btn btn-danger d-block mx-auto mt-1" id="btn_stop_target_game">
+              Остановить игру
+            </button>
+            <button type="button" class="btn btn-success d-block mx-auto mt-1" id="btn_start_target_game">
+              Запустить игру
+            </button>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="datas.js"></script>
+  <script src="common.js"></script>
+  <script src="base.js"></script>
+  <script src="target.js"></script>
+  <script src="socket.js"></script>
+</html>

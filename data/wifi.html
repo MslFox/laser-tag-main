@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wi-Fi Settings</title>
+  </head>
+  <body>
+    <h2>Настройки Wi-Fi</h2>
+    <form id="wifiForm">
+      <label for="wifiName" style="font-weight: bold;">Имя Wi-Fi:</label>
+      <br />
+      <input type="text" id="wifiName" name="wifiName" required />
+      <br />
+      <br />
+      <label for="wifiPassword" style="font-weight: bold;">Пароль:</label>
+      <br />
+      <input type="password" id="wifiPassword" name="wifiPassword" required />
+      <br />
+      <input type="checkbox" id="showPassword" />
+      <label for="showPassword">Показать пароль</label>
+      <br />
+      <br />
+      <label for="deviceId" style="font-weight: bold;">ID устройства:</label>
+      <br />
+      <select id="deviceId" name="deviceId" required>
+        <option value="" disabled selected>Выберите ID</option>
+        <!-- Генерируем опции от 1 до 15 -->
+        <script>
+          for (let i = 1; i <= 15; i++) {
+            0
+            document.write('<option value="' + i + '">' + i + "</option>")
+          }
+        </script>
+      </select>
+      <br />
+      <br />
+      <input type="submit" value="Отправить" />
+    </form>
+    <h3 id="detail" style="display: none; color: green;"></h3>
+    <h2 id="success" style="display: none; color: green;">
+      Настройки сохранены
+      <br />
+      Перезапустите устройство
+    </h2>
+    <h2 id="error" style="display: none; color: red;">
+      Настройки не сохранены
+      <br />
+      Попробуйте еще раз
+    </h2>
+
+    <script>
+      document.getElementById("showPassword").addEventListener("change", function () {
+        var passwordInput = document.getElementById("wifiPassword")
+        if (this.checked) {
+          passwordInput.type = "text"
+        } else {
+          passwordInput.type = "password"
+        }
+      })
+      document.getElementById("wifiForm").onsubmit = function (event) {
+        event.preventDefault() 
+
+        const wifiName = document.getElementById("wifiName").value
+        const wifiPassword = document.getElementById("wifiPassword").value
+        const deviceId = document.getElementById("deviceId").value
+
+        const data = {
+          wifiName: wifiName,
+          wifiPassword: wifiPassword,
+          deviceId: deviceId,
+        }
+        console.log(JSON.stringify(data))
+
+        fetch(window.location.href, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok " + response.statusText)
+            }
+            return response.text()
+          })
+          .then((data) => {
+            console.log("Успех:", data)
+            document.getElementById("error").style.display = "none"
+            document.getElementById("wifiForm").style.display = "none"
+            document.getElementById("success").style.display = "block"
+            let detail = document.getElementById("detail")
+            detail.innerHTML = data
+            detail.style.display = "block"
+          })
+          .catch((error) => {
+            console.error("Ошибка:", error.message)
+          })
+      }
+    </script>
+  </body>
+</html>
